@@ -1,0 +1,46 @@
+# Hexo Suprematism Theme Configuration
+
+# Contact
+email: nicolacola@outlook.com
+
+# ========================================
+# SUPREMATISM ART GENERATOR CONFIG
+# ========================================
+
+# Shape Generation
+shapes:
+  min: 12                    # Minimum number of shapes
+  max: 20                    # Maximum number of shapes
+
+# Color Weights (higher = more likely)
+colors:
+  black: 45
+  red: 25
+  gray: 15
+  tan: 8
+  yellow: 4
+  blue: 3
+
+# Big Circle
+bigCircle:
+  enabled: true
+  chance: 0.7                # 70% chance to appear
+  minSize: 200
+  maxSize: 380
+
+# Arcs
+arcs:
+  fullArcs:
+    min: 1
+    max: 2
+  partialArcChance: 0.3      # 30% chance for partial arcs
+
+# Collage Images
+collage:
+  enabled: true
+  minImages: 2
+  maxImages: 3
+  minSize: 300
+  maxSize: 500
+  opacityMin: 0.7
+  opacityMax: 0.95

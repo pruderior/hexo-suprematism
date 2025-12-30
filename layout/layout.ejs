@@ -12,13 +12,49 @@
         <div id="title-composition" class="title-composition"></div>
     </header>
     
-    <!-- Site Data for Header -->
+    <!-- Site Data and Theme Config -->
     <script>
         window.SITE_DATA = {
             title: "<%= config.title %>",
             subtitle: "<%= config.subtitle || '' %>",
             description: "<%= config.description || '' %>",
             author: "<%= config.author || '' %>"
+        };
+        
+        // Suprematism Generator Config (from _config.yml)
+        window.SUPREMATISM_CONFIG = {
+            shapes: {
+                min: <%= theme.shapes && theme.shapes.min ? theme.shapes.min : 12 %>,
+                max: <%= theme.shapes && theme.shapes.max ? theme.shapes.max : 20 %>
+            },
+            colors: {
+                black: <%= theme.colors && theme.colors.black ? theme.colors.black : 45 %>,
+                red: <%= theme.colors && theme.colors.red ? theme.colors.red : 25 %>,
+                gray: <%= theme.colors && theme.colors.gray ? theme.colors.gray : 15 %>,
+                tan: <%= theme.colors && theme.colors.tan ? theme.colors.tan : 8 %>,
+                yellow: <%= theme.colors && theme.colors.yellow ? theme.colors.yellow : 4 %>,
+                blue: <%= theme.colors && theme.colors.blue ? theme.colors.blue : 3 %>
+            },
+            bigCircle: {
+                enabled: <%= theme.bigCircle && typeof theme.bigCircle.enabled !== 'undefined' ? theme.bigCircle.enabled : true %>,
+                chance: <%= theme.bigCircle && theme.bigCircle.chance ? theme.bigCircle.chance : 0.7 %>,
+                minSize: <%= theme.bigCircle && theme.bigCircle.minSize ? theme.bigCircle.minSize : 200 %>,
+                maxSize: <%= theme.bigCircle && theme.bigCircle.maxSize ? theme.bigCircle.maxSize : 380 %>
+            },
+            arcs: {
+                fullArcsMin: <%= theme.arcs && theme.arcs.fullArcs && theme.arcs.fullArcs.min ? theme.arcs.fullArcs.min : 1 %>,
+                fullArcsMax: <%= theme.arcs && theme.arcs.fullArcs && theme.arcs.fullArcs.max ? theme.arcs.fullArcs.max : 2 %>,
+                partialArcChance: <%= theme.arcs && theme.arcs.partialArcChance ? theme.arcs.partialArcChance : 0.3 %>
+            },
+            collage: {
+                enabled: <%= theme.collage && typeof theme.collage.enabled !== 'undefined' ? theme.collage.enabled : true %>,
+                minImages: <%= theme.collage && theme.collage.minImages ? theme.collage.minImages : 2 %>,
+                maxImages: <%= theme.collage && theme.collage.maxImages ? theme.collage.maxImages : 3 %>,
+                minSize: <%= theme.collage && theme.collage.minSize ? theme.collage.minSize : 300 %>,
+                maxSize: <%= theme.collage && theme.collage.maxSize ? theme.collage.maxSize : 500 %>,
+                opacityMin: <%= theme.collage && theme.collage.opacityMin ? theme.collage.opacityMin : 0.7 %>,
+                opacityMax: <%= theme.collage && theme.collage.opacityMax ? theme.collage.opacityMax : 0.95 %>
+            }
         };
         
         // Collage images - add your image filenames here

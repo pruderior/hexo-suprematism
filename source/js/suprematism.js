@@ -1,6 +1,6 @@
 /**
  * Suprematism Art Generator
- * With guaranteed arcs, big circle, and collage images
+ * Config loaded from _config.yml via window.SUPREMATISM_CONFIG
  */
 
 (function() {
@@ -15,28 +15,51 @@
     tan: '#C4A87A'
   };
 
+  // ========================================
+  // LOAD CONFIG FROM _config.yml (via layout.ejs)
+  // Falls back to defaults if not set
+  // ========================================
+  const userConfig = window.SUPREMATISM_CONFIG || {};
+  
   const CONFIG = {
-    minShapes: 12,
-    maxShapes: 20,
-    colorWeights: { black: 45, red: 25, gray: 15, tan: 8, yellow: 4, blue: 3 }
+    minShapes: userConfig.shapes?.min ?? 12,
+    maxShapes: userConfig.shapes?.max ?? 20,
+    colorWeights: {
+      black: userConfig.colors?.black ?? 45,
+      red: userConfig.colors?.red ?? 25,
+      gray: userConfig.colors?.gray ?? 15,
+      tan: userConfig.colors?.tan ?? 8,
+      yellow: userConfig.colors?.yellow ?? 4,
+      blue: userConfig.colors?.blue ?? 3
+    }
   };
 
-  // ========================================
-  // COLLAGE IMAGES CONFIG
-  // Add your B&W image paths here
-  // Images should be small (100-300px), optimized WebP/PNG
-  // ========================================
-  // This will be populated by Hexo at build time
-  // Fallback to empty array if not set
+  const BIG_CIRCLE_CONFIG = {
+    enabled: userConfig.bigCircle?.enabled ?? true,
+    chance: userConfig.bigCircle?.chance ?? 0.7,
+    minSize: userConfig.bigCircle?.minSize ?? 200,
+    maxSize: userConfig.bigCircle?.maxSize ?? 380
+  };
+
+  const ARC_CONFIG = {
+    fullArcsMin: userConfig.arcs?.fullArcsMin ?? 1,
+    fullArcsMax: userConfig.arcs?.fullArcsMax ?? 2,
+    partialArcChance: userConfig.arcs?.partialArcChance ?? 0.3
+  };
+
+  // Collage images from window (set in layout.ejs)
   const COLLAGE_IMAGES = window.COLLAGE_IMAGES || [];
 
   const COLLAGE_CONFIG = {
-    enabled: COLLAGE_IMAGES.length > 0,
-    minImages: 2,
-    maxImages: 3,
-    minSize: 300,
-    maxSize: 500,
-    opacity: { min: 0.7, max: 0.95 }
+    enabled: (userConfig.collage?.enabled ?? true) && COLLAGE_IMAGES.length > 0,
+    minImages: userConfig.collage?.minImages ?? 2,
+    maxImages: userConfig.collage?.maxImages ?? 3,
+    minSize: userConfig.collage?.minSize ?? 300,
+    maxSize: userConfig.collage?.maxSize ?? 500,
+    opacity: {
+      min: userConfig.collage?.opacityMin ?? 0.7,
+      max: userConfig.collage?.opacityMax ?? 0.95
+    }
   };
 
   function getRandomColor() {
@@ -110,10 +133,10 @@
     container.appendChild(el);
   }
 
-  // BIG CIRCLE - one HUGE prominent circle
+  // BIG CIRCLE - one HUGE prominent circle (uses config)
   function createBigCircle(container) {
     const el = document.createElement('div');
-    const size = rand(200, 380); // MUCH BIGGER
+    const size = rand(BIG_CIRCLE_CONFIG.minSize, BIG_CIRCLE_CONFIG.maxSize);
     const left = rand(5, 65);
     const top = rand(10, 55);
     const opacity = rand(0.75, 1);
@@ -328,27 +351,27 @@
     `;
     
     // ========================================
-    // GUARANTEED: 1-2 full arc lines
+    // GUARANTEED: Full arc lines (uses config)
     // ========================================
-    const numFullArcs = randInt(1, 2);
+    const numFullArcs = randInt(ARC_CONFIG.fullArcsMin, ARC_CONFIG.fullArcsMax);
     for (let i = 0; i < numFullArcs; i++) {
       createFullArc(canvas);
     }
     
     // ========================================
-    // GUARANTEED: 1 big circle (70% chance)
+    // Big circle (uses config chance)
     // ========================================
-    if (Math.random() > 0.3) {
+    if (BIG_CIRCLE_CONFIG.enabled && Math.random() < BIG_CIRCLE_CONFIG.chance) {
       createBigCircle(canvas);
     }
     
     // ========================================
-    // Additional partial arcs (30% chance each)
+    // Additional partial arcs (uses config)
     // ========================================
-    if (Math.random() > 0.7) {
+    if (Math.random() < ARC_CONFIG.partialArcChance) {
       createPartialArc(canvas);
     }
-    if (Math.random() > 0.8) {
+    if (Math.random() < ARC_CONFIG.partialArcChance * 0.6) {
       createPartialArc(canvas);
     }
     

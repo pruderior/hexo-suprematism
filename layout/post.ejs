@@ -19,8 +19,10 @@
     <footer class="site-footer">
         <p><%= config.subtitle || config.title %></p>
         <p class="footer-links">
-            <a href="mailto:nicolacola@outlook.com" title="Email">✉ Email</a>
+            <% if (theme.email) { %>
+            <a href="mailto:<%= theme.email %>" title="Email">✉ Email</a>
             <span class="footer-divider">·</span>
+            <% } %>
             <a href="<%- url_for('/atom.xml') %>" title="RSS Feed">⊕ RSS</a>
         </p>
         <p class="footer-meta">
