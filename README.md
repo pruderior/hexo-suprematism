@@ -2,7 +2,7 @@
 
 A Hexo theme inspired by **Suprematism** and **Russian Constructivism**, particularly the work of **Ilia Chashnik** and **El Lissitzky**.
 
-![Suprematism Theme Preview](screenshots/Screenshot%202025-12-29%20at%2010.22.00%20PM.png)
+![Suprematism Theme Preview](screenshots/Screenshot%202025-12-29%20at%2010.22.00%E2%80%AFPM.png)
 
 ## Features
 
