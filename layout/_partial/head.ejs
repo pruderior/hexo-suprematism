@@ -21,7 +21,7 @@ if (is_archive()) {
 %>
 <title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
 
-<% if (theme.favicon) { %>
+<% if (theme && theme.favicon) { %>
 <link rel="icon" href="<%- url_for(theme.favicon) %>">
 <% } %>
 
@@ -30,8 +30,5 @@ if (is_archive()) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
 
-<% if (theme.stylesheets && theme.stylesheets.length > 0) { %>
-    <% theme.stylesheets.forEach(url => { %>
-<link rel="stylesheet" href="<%- url_for(url) %>">
-    <% }); %>
-<% } %>
+<!-- Styles -->
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %>">
