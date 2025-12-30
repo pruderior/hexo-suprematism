@@ -16,7 +16,7 @@ A Hexo theme inspired by **Suprematism** and **Russian Constructivism**, particu
 
 ## Live Demo
 
-[Coming soon]
+[https://www.zxk.one/](https://www.zxk.one/)
 
 ## Installation
 
