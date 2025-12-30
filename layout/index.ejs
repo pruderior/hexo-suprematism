@@ -1,13 +1,5 @@
 <div class="container">
-    <!-- Header -->
-    <header class="site-header">
-        <h1 class="site-title"><%= (theme && theme.navname) ? theme.navname : config.title %></h1>
-    </header>
-
-    <!-- Latest Stories -->
     <section class="stories">
-        <h2 class="section-title">Latest stories</h2>
-        
         <% page.posts.each(function(post) { %>
         <article class="story">
             <h3 class="story-title">
