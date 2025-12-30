@@ -140,7 +140,7 @@ a {
   font-family: var(--font-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--black);
+  color: var(--gray);
   letter-spacing: 0.05em;
   margin: 0;
   white-space: nowrap;
@@ -266,20 +266,27 @@ a {
   margin-bottom: 50px;
 }
 
+.story-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .story {
   margin-bottom: 40px;
   padding-bottom: 40px;
   padding-left: 16px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
   border-left: 3px solid transparent;
-  transition: border-left-color 0.2s ease, padding-left 0.2s ease;
+  transition: border-left-color 0.2s ease;
+  cursor: pointer;
 }
 
-.story:hover {
+.story-link:hover .story {
   border-left-color: var(--red);
 }
 
-.story:last-child {
+.story-link:last-child .story {
   border-bottom: none;
 }
 
@@ -289,14 +296,11 @@ a {
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 8px;
-}
-
-.story-title a {
   color: var(--black);
   transition: color 0.15s ease;
 }
 
-.story-title a:hover {
+.story-link:hover .story-title {
   color: var(--red);
 }
 
@@ -522,6 +526,38 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--gray);
+}
+
+.site-footer .footer-links {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 15px;
+}
+
+.site-footer .footer-links a {
+  color: var(--black);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer .footer-links a:hover {
+  color: var(--red);
+}
+
+.site-footer .footer-divider {
+  margin: 0 10px;
+  color: var(--gray);
+}
+
+.site-footer .footer-meta a {
+  color: var(--red);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.site-footer .footer-meta a:hover {
+  border-bottom-color: var(--red);
 }
 
 /* ========================================

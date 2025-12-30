@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Cream background -->
+  <rect width="32" height="32" fill="#F2EDE4"/>
+  <!-- Red square - tilted (Suprematist style) -->
+  <rect x="8" y="8" width="16" height="16" fill="#C93A32" transform="rotate(12 16 16)"/>
+  <!-- Small black accent -->
+  <circle cx="24" cy="8" r="3" fill="#1A1A1A"/>
+</svg>
+

@@ -1,6 +1,6 @@
 /**
  * Suprematism Art Generator
- * With guaranteed arcs and big circle
+ * With guaranteed arcs, big circle, and collage images
  */
 
 (function() {
@@ -19,6 +19,24 @@
     minShapes: 12,
     maxShapes: 20,
     colorWeights: { black: 45, red: 25, gray: 15, tan: 8, yellow: 4, blue: 3 }
+  };
+
+  // ========================================
+  // COLLAGE IMAGES CONFIG
+  // Add your B&W image paths here
+  // Images should be small (100-300px), optimized WebP/PNG
+  // ========================================
+  // This will be populated by Hexo at build time
+  // Fallback to empty array if not set
+  const COLLAGE_IMAGES = window.COLLAGE_IMAGES || [];
+
+  const COLLAGE_CONFIG = {
+    enabled: COLLAGE_IMAGES.length > 0,
+    minImages: 2,
+    maxImages: 3,
+    minSize: 300,
+    maxSize: 500,
+    opacity: { min: 0.7, max: 0.95 }
   };
 
   function getRandomColor() {
@@ -186,6 +204,68 @@
       clip-path: polygon(${clipStart}% 0%, ${clipEnd}% 0%, ${clipEnd}% 100%, ${clipStart}% 100%);
     `;
     container.appendChild(el);
+  }
+
+  // ========================================
+  // COLLAGE IMAGE - B&W photomontage element
+  // Each image appears at most once, with anti-overlap zones
+  // ========================================
+  
+  // Zones to spread images across the page (avoid overlap)
+  const COLLAGE_ZONES = [
+    { left: [5, 30], top: [10, 40] },   // Top-left
+    { left: [35, 65], top: [5, 35] },   // Top-center
+    { left: [60, 85], top: [10, 40] },  // Top-right
+    { left: [5, 30], top: [45, 75] },   // Bottom-left
+    { left: [35, 65], top: [50, 80] },  // Bottom-center
+    { left: [60, 85], top: [45, 75] },  // Bottom-right
+  ];
+
+  function createCollageImage(container, imgSrc, zone) {
+    const el = document.createElement('img');
+    
+    const size = rand(COLLAGE_CONFIG.minSize, COLLAGE_CONFIG.maxSize);
+    const left = rand(zone.left[0], zone.left[1]);
+    const top = rand(zone.top[0], zone.top[1]);
+    const rotation = rand(-25, 25);
+    const opacity = rand(COLLAGE_CONFIG.opacity.min, COLLAGE_CONFIG.opacity.max);
+    
+    el.src = imgSrc;
+    el.alt = '';
+    el.loading = 'lazy';
+    el.style.cssText = `
+      position: absolute;
+      left: ${left}%;
+      top: ${top}%;
+      width: ${size}px;
+      height: auto;
+      transform: rotate(${rotation}deg);
+      opacity: ${opacity};
+      pointer-events: none;
+      object-fit: contain;
+    `;
+    
+    el.onerror = () => el.remove();
+    container.appendChild(el);
+  }
+
+  // Add collage images - each image used at most once, spread across zones
+  function addCollageImages(container) {
+    if (!COLLAGE_CONFIG.enabled || COLLAGE_IMAGES.length === 0) return;
+    
+    // Shuffle images and zones
+    const shuffledImages = [...COLLAGE_IMAGES].sort(() => Math.random() - 0.5);
+    const shuffledZones = [...COLLAGE_ZONES].sort(() => Math.random() - 0.5);
+    
+    // Pick how many images (up to available, each unique)
+    const maxPossible = Math.min(COLLAGE_CONFIG.maxImages, shuffledImages.length);
+    const numImages = randInt(COLLAGE_CONFIG.minImages, maxPossible);
+    
+    // Add each unique image in a different zone
+    for (let i = 0; i < numImages; i++) {
+      const zone = shuffledZones[i % shuffledZones.length];
+      createCollageImage(container, shuffledImages[i], zone);
+    }
   }
 
   // Cluster of shapes
@@ -358,6 +438,11 @@
       }
       canvas.appendChild(rightAccent);
     }
+    
+    // ========================================
+    // COLLAGE IMAGES (loaded last, on top)
+    // ========================================
+    addCollageImages(canvas);
   }
 
   if (document.readyState === 'loading') {

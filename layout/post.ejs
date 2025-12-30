@@ -17,7 +17,18 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-        <p><%= (theme && theme.navname) ? theme.navname : config.title %></p>
-        <p class="footer-meta">Constructivism · Powered by Hexo</p>
+        <p><%= config.subtitle || config.title %></p>
+        <p class="footer-links">
+            <a href="mailto:nicolacola@outlook.com" title="Email">✉ Email</a>
+            <span class="footer-divider">·</span>
+            <a href="<%- url_for('/atom.xml') %>" title="RSS Feed">⊕ RSS</a>
+        </p>
+        <p class="footer-meta">
+            Theme <a href="https://github.com/pruderior/hexo-suprematism" target="_blank">Suprematist</a> · 
+            Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+        </p>
+        <p class="footer-meta">
+            Inspired by <a href="https://www.goodreads.com/book/show/6177320-the-great-utopia" target="_blank">The Great Utopia</a>
+        </p>
     </footer>
 </div>
