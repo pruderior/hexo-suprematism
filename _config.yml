@@ -1,0 +1,28 @@
+# Hexo Suprematism Theme Configuration
+
+# Site
+navname: 张仙客来长安
+
+# Navigation
+nav:
+  Posts: /archives
+  Tags: /tag
+
+# Favicon
+favicon: /arena.svg
+
+# Profile
+nickname: 张仙客
+description: 走吧，我们去寻找生命的湖
+
+# Post Settings
+post_meta_enable: true
+post_date_enable: true
+
+# Date Format
+date_format: YYYY.MM.DD
+
+# Stylesheets
+stylesheets:
+  - /css/style.css
+

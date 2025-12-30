@@ -1,0 +1,51 @@
+<div class="container">
+    <!-- Header -->
+    <header class="site-header">
+        <h1 class="site-title"><%= (theme && theme.navname) ? theme.navname : config.title %></h1>
+    </header>
+
+    <!-- Latest Stories -->
+    <section class="stories">
+        <h2 class="section-title">Latest stories</h2>
+        
+        <% page.posts.each(function(post) { %>
+        <article class="story">
+            <h3 class="story-title">
+                <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+            </h3>
+            <time class="story-date"><%- date(post.date, 'YYYY 年 MM 月 DD 日') %></time>
+            <% if (post.excerpt) { %>
+            <div class="story-excerpt">
+                <%- strip_html(post.excerpt).substring(0, 300) %>
+            </div>
+            <% } else if (post.content) { %>
+            <div class="story-excerpt">
+                <%- strip_html(post.content).substring(0, 300) %>...
+            </div>
+            <% } %>
+            <a href="<%- url_for(post.path) %>" class="read-more">READ MORE</a>
+        </article>
+        <% }); %>
+    </section>
+
+    <!-- Pagination -->
+    <% if (page.total > 1) { %>
+    <nav class="pagination">
+        <% if (page.prev) { %>
+        <a href="<%- url_for(page.prev_link) %>" class="page-link">&lt;&lt; prev</a>
+        <% } %>
+        <% for (var i = 1; i <= page.total; i++) { %>
+        <a href="<%- url_for(i === 1 ? '/' : '/page/' + i + '/') %>" class="page-link <%= page.current === i ? 'current' : '' %>"><%= i %></a>
+        <% } %>
+        <% if (page.next) { %>
+        <a href="<%- url_for(page.next_link) %>" class="page-link">next &gt;&gt;</a>
+        <% } %>
+    </nav>
+    <% } %>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p><%= (theme && theme.navname) ? theme.navname : config.title %></p>
+        <p class="footer-meta">Constructivism · Powered by Hexo</p>
+    </footer>
+</div>

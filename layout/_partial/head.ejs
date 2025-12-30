@@ -1,0 +1,37 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<% if (config.author) { %>
+<meta name="author" content="<%- config.author %>">
+<% } %>
+<% if (config.description) { %>
+<meta name="description" content="<%- config.description %>">
+<% } %>
+
+<%
+var title = page.title;
+if (is_archive()) {
+    title = 'Archive';
+} else if (is_category()) {
+    title = 'Category: ' + page.category;
+} else if (is_tag()) {
+    title = 'Tag: ' + page.tag;
+}
+%>
+<title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+
+<% if (theme.favicon) { %>
+<link rel="icon" href="<%- url_for(theme.favicon) %>">
+<% } %>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+
+<% if (theme.stylesheets && theme.stylesheets.length > 0) { %>
+    <% theme.stylesheets.forEach(url => { %>
+<link rel="stylesheet" href="<%- url_for(url) %>">
+    <% }); %>
+<% } %>

@@ -1,0 +1,25 @@
+{
+  "name": "hexo-theme-suprematism",
+  "version": "1.0.0",
+  "description": "A Hexo theme inspired by Suprematism and Russian Avant-garde art, particularly the work of Ilia Chashnik",
+  "main": "index.js",
+  "keywords": [
+    "hexo",
+    "hexo-theme",
+    "suprematism",
+    "avant-garde",
+    "minimalist",
+    "blog",
+    "typography"
+  ],
+  "author": "Zhang Xianke",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "hexo": ">=5.0.0"
+  }
+}
+

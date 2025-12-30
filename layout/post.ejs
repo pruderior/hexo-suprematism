@@ -1,0 +1,28 @@
+<div class="container">
+    <!-- Header -->
+    <header class="site-header">
+        <h1 class="site-title"><a href="<%- url_for('/') %>"><%= (theme && theme.navname) ? theme.navname : config.title %></a></h1>
+    </header>
+
+    <!-- Article -->
+    <article class="post">
+        <header class="post-header">
+            <h1 class="post-title"><%= page.title %></h1>
+            <time class="post-date"><%- date(page.date, 'YYYY 年 MM 月 DD 日') %></time>
+        </header>
+        
+        <div class="post-content">
+            <%- page.content %>
+        </div>
+
+        <footer class="post-footer">
+            <a href="<%- url_for('/') %>" class="back-link">← Back to home</a>
+        </footer>
+    </article>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p><%= (theme && theme.navname) ? theme.navname : config.title %></p>
+        <p class="footer-meta">Constructivism · Powered by Hexo</p>
+    </footer>
+</div>
