@@ -83,7 +83,7 @@ html {
 }
 
 .icarus-figure {
-  height: 100vh;
+  height: 150vh;
   width: auto;
   opacity: 1;
   will-change: transform;
