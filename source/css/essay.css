@@ -1,0 +1,464 @@
+/* ========================================
+   ESSAY LAYOUT
+   Clean, quiet, reading-focused design
+   ======================================== */
+
+:root {
+  --essay-fg: #2c2c2c;
+  --essay-fg-light: #6b6b6b;
+  --essay-fg-faint: #a0a0a0;
+  --essay-accent: #a33028;
+  --essay-bg-warm: #f7f4f0;
+  --essay-bg-cool: #eceef2;
+  --essay-quote-bg: rgba(163, 48, 40, 0.05);
+  --essay-quote-border: #c25550;
+  --essay-link: #6b4c30;
+
+  --font-chinese: "Noto Serif SC", "Source Han Serif SC", "PingFang SC", serif;
+  --font-body: 'Source Serif 4', "Noto Serif SC", "Source Han Serif SC", serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+/* ========================================
+   BODY & GRADIENT BACKGROUND
+   ======================================== */
+
+.essay-body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 2;
+  color: var(--essay-fg);
+  background: linear-gradient(
+    170deg,
+    var(--essay-bg-warm) 0%,
+    #f5f2ee 30%,
+    #f0f0f0 60%,
+    var(--essay-bg-cool) 100%
+  );
+  background-attachment: fixed;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   SUN — Expanding red circle
+   ======================================== */
+
+.sun {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+}
+
+/* ========================================
+   FALLING ICARUS — Parallax element
+   ======================================== */
+
+.icarus-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icarus-figure {
+  height: 130vh;
+  width: auto;
+  opacity: 1;
+  will-change: transform;
+}
+
+/* ========================================
+   SCATTERED FEATHERS — Parallax drift
+   ======================================== */
+
+.feathers-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.feather {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: auto;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* ========================================
+   LAYOUT WRAPPER
+   ======================================== */
+
+.essay-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 48px 100px;
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+.essay-nav {
+  margin-bottom: 80px;
+}
+
+.essay-back {
+  display: inline-block;
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  color: var(--essay-fg-faint);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.essay-back:hover {
+  color: var(--essay-fg);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.essay-header {
+  margin-bottom: 75vh;
+  text-align: center;
+}
+
+.essay-title {
+  font-family: var(--font-chinese);
+  font-size: 3.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--essay-accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.essay-date {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--essay-fg-faint);
+  letter-spacing: 0.15em;
+}
+
+/* ========================================
+   CONTENT
+   ======================================== */
+
+.essay-content {
+  position: relative;
+  font-size: 1.0625rem;
+  line-height: 2;
+  color: var(--essay-fg);
+  padding: 60px 48px 40px;
+  margin-left: -48px;
+  margin-right: -48px;
+  background: rgba(245, 245, 245, 0.88);
+}
+
+/* Soft gradient fade at top edge — transparent to the white veil */
+.essay-content::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 245, 245, 0) 0%,
+    rgba(245, 245, 245, 0.88) 100%
+  );
+  pointer-events: none;
+}
+
+.essay-content p {
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.essay-content a {
+  color: var(--essay-link);
+  text-decoration: underline;
+  text-decoration-color: var(--essay-quote-border);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.essay-content a:hover {
+  text-decoration-color: var(--essay-link);
+}
+
+/* ========================================
+   BLOCKQUOTES — Pull quotes
+   ======================================== */
+
+.essay-content blockquote {
+  margin: 20px 0;
+  padding: 20px 24px;
+  border: none;
+  border-left: 3px solid var(--essay-accent);
+  background: rgba(200, 200, 200, 0.15);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--essay-fg-light);
+  position: relative;
+}
+
+.essay-content blockquote::before {
+  content: none;
+  position: absolute;
+  top: -8px;
+  left: 16px;
+  font-size: 3.5rem;
+  font-family: Georgia, serif;
+  color: var(--essay-quote-border);
+  opacity: 0.4;
+  line-height: 1;
+}
+
+.essay-content blockquote p {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.essay-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   HEADINGS
+   ======================================== */
+
+.essay-content h2 {
+  font-family: var(--font-chinese);
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 56px 0 24px;
+  color: var(--essay-fg);
+  letter-spacing: 0.02em;
+}
+
+.essay-content h3 {
+  font-family: var(--font-chinese);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 40px 0 16px;
+  color: var(--essay-fg);
+}
+
+/* ========================================
+   LISTS
+   ======================================== */
+
+.essay-content ul,
+.essay-content ol {
+  margin: 24px 0;
+  padding-left: 24px;
+}
+
+.essay-content li {
+  margin-bottom: 10px;
+}
+
+/* ========================================
+   CODE
+   ======================================== */
+
+.essay-content code {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.875em;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.essay-content pre {
+  margin: 32px 0;
+  padding: 20px;
+  background: #2c2c2c;
+  color: #f0ece6;
+  overflow-x: auto;
+  border-radius: 4px;
+}
+
+.essay-content pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+/* ========================================
+   IMAGES & HORIZONTAL RULES
+   ======================================== */
+
+.essay-content img {
+  max-width: 100%;
+  margin: 36px 0;
+}
+
+.essay-content hr {
+  margin: 56px auto;
+  border: none;
+  width: 60px;
+  height: 1px;
+  background: var(--essay-fg-faint);
+  opacity: 0.4;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.essay-footer {
+  margin-top: 0;
+  padding: 32px 48px 40px;
+  margin-left: -48px;
+  margin-right: -48px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  text-align: center;
+  background: rgba(245, 245, 245, 0.88);
+}
+
+.essay-footer a {
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  color: var(--essay-fg-faint);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.essay-footer a:hover {
+  color: var(--essay-fg);
+}
+
+/* ========================================
+   SELECTION
+   ======================================== */
+
+::selection {
+  background: var(--essay-accent);
+  color: #fff;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 700px) {
+  .essay-body {
+    font-size: 16px;
+  }
+
+  .essay-wrapper {
+    padding: 40px 20px 80px;
+  }
+
+  .icarus-figure {
+    height: 75vh;
+  }
+
+  .essay-content {
+    padding: 48px 24px 32px;
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .essay-footer {
+    padding: 32px 24px 32px;
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .essay-nav {
+    margin-bottom: 60px;
+  }
+
+  .essay-header {
+    margin-bottom: 48px;
+  }
+
+  .essay-title {
+    font-size: 1.5rem;
+  }
+
+  .essay-content blockquote {
+    margin: 36px 0;
+    padding: 24px 20px;
+  }
+
+  .essay-content blockquote::before {
+    font-size: 2.5rem;
+    left: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .essay-wrapper {
+    padding: 32px 18px 60px;
+  }
+
+  .essay-content {
+    font-size: 1rem;
+    padding: 40px 18px 24px;
+    margin-left: -18px;
+    margin-right: -18px;
+  }
+
+  .essay-footer {
+    padding: 24px 18px 24px;
+    margin-left: -18px;
+    margin-right: -18px;
+  }
+
+  .essay-nav {
+    margin-bottom: 48px;
+  }
+
+  .essay-header {
+    margin-bottom: 36px;
+  }
+
+  .essay-title {
+    font-size: 1.3rem;
+  }
+
+  .essay-content blockquote {
+    margin: 28px 0;
+    padding: 20px 16px;
+  }
+}

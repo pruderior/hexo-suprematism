@@ -1,0 +1,172 @@
+<!-- Sun — expanding red circle from top-right (temporarily hidden) -->
+<!-- <div class="sun" id="sun"></div> -->
+
+<!-- Falling Icarus — parallax scroll -->
+<div class="icarus-container">
+    <img src="<%- url_for('/images/essay/icarus.png') %>" alt="" class="icarus-figure" id="icarus">
+</div>
+
+<!-- Scattered feathers -->
+<div class="feathers-container" id="feathers-container"></div>
+
+<div class="essay-wrapper">
+    <nav class="essay-nav">
+        <a href="<%- url_for('/') %>" class="essay-back">&larr; 返回</a>
+    </nav>
+
+    <article class="essay">
+        <header class="essay-header">
+            <h1 class="essay-title"><%= page.title %></h1>
+        </header>
+
+        <div class="essay-content">
+            <%- page.content %>
+        </div>
+    </article>
+
+    <footer class="essay-footer">
+        <a href="<%- url_for('/') %>">&larr; 返回主页</a>
+    </footer>
+</div>
+
+<script>
+(function () {
+    var icarus = document.getElementById('icarus');
+    var feathersContainer = document.getElementById('feathers-container');
+    var sun = document.getElementById('sun');
+    if (!icarus || !feathersContainer) return;
+
+    var docHeight = 0;
+    var viewHeight = 0;
+    var viewWidth = 0;
+    var ticking = false;
+
+    // --- Generate feathers ---
+    var FEATHER_COUNT = 20;
+    var featherSrc = '<%- url_for("/images/essay/feather.png") %>';
+    var feathers = [];
+
+    function rand(min, max) { return min + Math.random() * (max - min); }
+
+    for (var i = 0; i < FEATHER_COUNT; i++) {
+        var el = document.createElement('img');
+        el.src = featherSrc;
+        el.className = 'feather';
+        feathersContainer.appendChild(el);
+
+        // Force even left/right split
+        var goLeft = (i % 2 === 0);
+        feathers.push({
+            el: el,
+            // Start clustered near Icarus (center-top)
+            startX: rand(-3, 3),
+            startY: rand(-3, 3),
+            // Scatter: alternating left and right
+            driftX: goLeft ? rand(-45, -8) : rand(8, 45),
+            driftY: rand(30, 70),
+            // Rotation: gentle tumble
+            startRot: rand(-20, 20),
+            endRot: rand(-240, 240),
+            // Start visible, grow as they approach "camera"
+            scaleStart: rand(0.5, 0.9),
+            scaleEnd: rand(2, 4),
+            // Appear early
+            delay: rand(0.0, 0.04),
+            // Sway
+            swayAmp: rand(3, 8),
+            swayFreq: rand(1, 3),
+            // Whether this feather "flies into camera" at the end
+            isCloseup: (i < 3),
+        });
+    }
+    // Make sure the 3 closeup feathers get extra large and drift to screen edges
+    for (var j = 0; j < 2; j++) {
+        feathers[j].scaleEnd = rand(4, 7);
+        feathers[j].driftX = rand(-20, 20);
+        feathers[j].driftY = rand(40, 55);
+        feathers[j].delay = rand(0.15, 0.3);
+    }
+
+    function measure() {
+        docHeight = document.documentElement.scrollHeight;
+        viewHeight = window.innerHeight;
+        viewWidth = window.innerWidth;
+    }
+
+    function update() {
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        var maxScroll = docHeight - viewHeight;
+        if (maxScroll <= 0) return;
+
+        var progress = Math.min(scrollY / maxScroll, 1);
+
+        // --- Sun (temporarily disabled) ---
+        if (sun) {
+            var sunProgress = Math.max(0, (progress - 0.05) / 0.95);
+            var sunEased = sunProgress * sunProgress;
+            var sunW = sunEased * 220;
+            var sunH = sunEased * 130;
+            var sunOpacity = Math.min(sunProgress / 0.08, 1);
+            sun.style.background = 'radial-gradient(' + sunW + 'vmax ' + sunH + 'vmax at 100% 0%, rgba(180, 40, 30, 0.7) 100%, transparent 100%)';
+            sun.style.opacity = sunOpacity;
+        }
+
+        // --- Icarus ---
+        var fallDistance = viewHeight * 1.2;
+        var yOffset = viewHeight * 0.05 + progress * fallDistance;
+        icarus.style.transform = 'translateY(' + yOffset + 'px)';
+        icarus.style.opacity = 1;
+
+        // --- Feathers ---
+        for (var i = 0; i < feathers.length; i++) {
+            var f = feathers[i];
+            // Local progress for this feather (delayed start)
+            var local = Math.max(0, (progress - f.delay) / (1 - f.delay));
+
+            // Ease: slow start, accelerate (like gravity)
+            var eased = local * local;
+            // Gentler ease for drift
+            var driftEased = 1 - Math.pow(1 - local, 2.5);
+
+            var x = f.startX + f.driftX * driftEased;
+            x += Math.sin(local * f.swayFreq * Math.PI * 2) * f.swayAmp * (1 - local * 0.5);
+            var y = f.startY + f.driftY * eased;
+            var rot = f.startRot + (f.endRot - f.startRot) * driftEased;
+
+            // Scale: starts small, grows as it "approaches camera"
+            var scale = f.scaleStart + (f.scaleEnd - f.scaleStart) * eased;
+
+            // Opacity: fade in, stay, large closeup feathers go slightly more opaque
+            var featherOpacity = 0;
+            var peakOpacity = f.isCloseup ? 0.22 : 0.16;
+            if (local > 0 && local <= 1) {
+                // Fade in over first 15%
+                var fadeIn = Math.min(local / 0.15, 1);
+                // Fade out in last 5%
+                var fadeOut = local > 0.95 ? (1 - local) / 0.05 : 1;
+                featherOpacity = fadeIn * fadeOut * peakOpacity;
+            }
+
+            f.el.style.transform = 'translate(' + x + 'vw, ' + y + 'vh) rotate(' + rot + 'deg) scale(' + scale + ')';
+            f.el.style.opacity = featherOpacity;
+        }
+
+        ticking = false;
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }
+
+    measure();
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () {
+        measure();
+        update();
+    });
+})();
+</script>

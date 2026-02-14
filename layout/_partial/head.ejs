@@ -31,4 +31,8 @@ if (is_archive()) {
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+SC:wght@400;500;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
 
 <!-- Styles -->
+<% if (page.layout === 'essay') { %>
+<link rel="stylesheet" href="<%- url_for('/css/essay.css') %>">
+<% } else { %>
 <link rel="stylesheet" href="<%- url_for('/css/style.css') %>">
+<% } %>
